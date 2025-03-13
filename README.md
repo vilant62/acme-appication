@@ -29,3 +29,29 @@ The application has been updated and the candidate is required to deploy a new v
 application and take into consideration that downtime should be minimized.
 
 ----
+
+Solution 1
+----
+
+Use Azure Container App
+-----
+
+[![Deployment](https://github.com/vilant62/acme-appication/actions/workflows/deployment.yaml/badge.svg)](https://github.com/vilant62/acme-appication/actions/workflows/deployment.yaml)
+
+[Application link](https://acme-super-app.calmwater-5ff97f3e.northeurope.azurecontainerapps.io/success)
+
+Azure Container Apps provides a streamlined approach for creating consistent and reliable deployments using GitHub Actions. The deployment process is defined in the GitHub Actions workflow file [deployment.yaml](.github/workflows/deployment.yaml). This workflow encompasses a single job that performs three key tasks: building a Docker container, pushing it to the registry, and deploying it to Azure Cloud.
+The deployment configuration utilizes Azure Bicep, a domain-specific language for declaratively deploying Azure resources. The [main.bicep](./bicep/main.bicep) file, defines all the necessary resources required to run the application. This approach allows a more manageable and reproducible infrastructure-as-code setup.
+
+Solution 2
+----
+
+Use multiple revisions for containers in Container App
+----
+
+The Azure container app provides a build-in functionality of gradual rollouts and easier rollbacks if issues arise. The zero-downtime deployment workflow:
+
+- Redirect traffic to the latest active revision by name, avoiding the "latest" revision alias
+- Deploy a new revision without traffic
+- Wait for the new revision to be fully provisioned and healthy
+- Gradually shift traffic to the new revision
